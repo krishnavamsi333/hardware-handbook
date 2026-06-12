@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voltage, Current & Power | Hardware Handbook</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="../../index.html" class="site-logo">Hardware Handbook</a>
+    <nav class="breadcrumb">
+      <a href="../../index.html">Home</a> &rsaquo;
+      <a href="../../index.html#fundamentals">Fundamentals</a> &rsaquo;
+      <span>Voltage, Current &amp; Power</span>
+    </nav>
+  </header>
+
+  <main class="chapter-main">
+
+    <article class="chapter-content">
+
+      <div class="chapter-meta">
+        <span class="chapter-tag">Fundamentals</span>
+      </div>
+      <h1>Voltage, Current &amp; Power</h1>
+      <p class="chapter-intro">
+        Every circuit analysis starts here. Voltage, current, and power are the three quantities you will measure, calculate, and reason about on every board you design.
+      </p>
+
+      <!-- VOLTAGE -->
+      <section>
+        <h2>Voltage (V)</h2>
+        <p>
+          Voltage is the electric potential difference between two points. It is the "pressure" that drives current through a circuit. Voltage is always measured <strong>between two nodes</strong> — it is never an absolute value, always relative.
+        </p>
+        <div class="formula-block">
+          <p>V = E / Q</p>
+          <p class="formula-note">Energy (joules) per unit charge (coulombs). Unit: Volt (V)</p>
+        </div>
+        <div class="practical-tip">
+          <span class="tip-label">Practical tip</span>
+          When probing with a multimeter, always ask "voltage with respect to what?" Your black probe defines the reference. Floating the black probe gives meaningless readings.
+        </div>
+      </section>
+
+      <!-- CURRENT -->
+      <section>
+        <h2>Current (I)</h2>
+        <p>
+          Current is the flow of electric charge through a conductor. It is measured in Amperes (A), where 1 A = 1 coulomb of charge passing a point per second.
+        </p>
+        <div class="formula-block">
+          <p>I = Q / t</p>
+          <p class="formula-note">Charge (coulombs) per unit time (seconds). Unit: Ampere (A)</p>
+        </div>
+        <div class="practical-tip">
+          <span class="tip-label">Practical tip</span>
+          Current must flow in a loop. If you cannot trace a complete path from source back to source, current cannot flow — no matter how much voltage is applied.
+        </div>
+      </section>
+
+      <!-- POWER -->
+      <section>
+        <h2>Power (P)</h2>
+        <p>
+          Power is the rate at which energy is transferred or dissipated. In electronics, power dissipated as heat is what destroys components — always check power budgets.
+        </p>
+        <div class="formula-block">
+          <p>P = V × I</p>
+          <p>P = I² × R</p>
+          <p>P = V² / R</p>
+          <p class="formula-note">Unit: Watt (W). All three forms are equivalent via Ohm's Law.</p>
+        </div>
+        <div class="practical-tip">
+          <span class="tip-label">Practical tip</span>
+          When selecting resistors, calculate the power dissipation first. A 100 Ω resistor with 5 V across it dissipates 250 mW — a standard 1/4 W resistor is already at its limit. Use the I²R form when current is known; use V²/R when voltage is fixed.
+        </div>
+      </section>
+
+      <!-- ENERGY -->
+      <section>
+        <h2>Energy (E)</h2>
+        <p>
+          Energy is power integrated over time. Batteries and capacitors store energy, not power. This is the quantity relevant for battery sizing and runtime calculations.
+        </p>
+        <div class="formula-block">
+          <p>E = P × t = V × I × t</p>
+          <p class="formula-note">Unit: Joule (J), or Watt-hour (Wh) for battery sizing. 1 Wh = 3600 J</p>
+        </div>
+      </section>
+
+      <!-- QUICK REFERENCE -->
+      <section>
+        <h2>Quick Reference</h2>
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Quantity</th>
+              <th>Symbol</th>
+              <th>Unit</th>
+              <th>Measured with</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Voltage</td><td>V</td><td>Volt (V)</td><td>Multimeter across two nodes</td></tr>
+            <tr><td>Current</td><td>I</td><td>Ampere (A)</td><td>Multimeter in series (break the circuit)</td></tr>
+            <tr><td>Power</td><td>P</td><td>Watt (W)</td><td>Calculate from V and I</td></tr>
+            <tr><td>Energy</td><td>E</td><td>Joule (J) / Wh</td><td>Calculate from P and time</td></tr>
+            <tr><td>Resistance</td><td>R</td><td>Ohm (Ω)</td><td>Multimeter (power off!)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- COMMON MISTAKES -->
+      <section>
+        <h2>Common Mistakes</h2>
+        <ul>
+          <li>Measuring voltage with the multimeter in current mode — this shorts the circuit through the meter's shunt and can blow the fuse.</li>
+          <li>Ignoring power dissipation when choosing resistors — always derate to 50% of rated power in continuous operation.</li>
+          <li>Confusing energy and power — a battery's capacity in mAh is a charge quantity, not directly power. Multiply by voltage to get energy (Wh).</li>
+        </ul>
+      </section>
+
+    </article>
+
+    <!-- CHAPTER NAVIGATION -->
+    <nav class="chapter-nav">
+      <div class="chapter-nav-prev">
+        <!-- First page in fundamentals, no previous -->
+      </div>
+      <a href="../../index.html" class="chapter-nav-home">&#8962; All Chapters</a>
+      <div class="chapter-nav-next">
+        <a href="conventional-current.html">Next: Conventional Current &rsaquo;</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Hardware Handbook &mdash; A practical reference for hardware engineers.</p>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
