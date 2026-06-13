@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Push-Pull Outputs | Hardware Handbook</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="../../index.html" class="site-logo">Hardware Handbook</a>
+    <nav class="breadcrumb">
+      <a href="../../index.html">Home</a> &rsaquo;
+      <a href="../../index.html#fundamentals">Fundamentals</a> &rsaquo;
+      <span>Push-Pull Outputs</span>
+    </nav>
+  </header>
+
+  <main class="chapter-main">
+
+    <article class="chapter-content">
+
+      <div class="chapter-meta">
+        <span class="chapter-tag">Fundamentals</span>
+      </div>
+      <h1>Push-Pull Outputs</h1>
+      <p class="chapter-intro">
+        The default output stage on almost every digital pin. Two transistors, one job each: one "pushes" the line to V<sub>CC</sub>, the other "pulls" it to GND. Together they can drive a line to either state quickly and with low impedance.
+      </p>
+
+      <section>
+        <h2>How It Works</h2>
+        <p>
+          A push-pull stage is built from a complementary pair of switches &mdash; typically a P-channel MOSFET (or PNP transistor) on top, connected to V<sub>CC</sub>, and an N-channel MOSFET (or NPN transistor) on the bottom, connected to GND. Exactly one of the pair is on at a time:
+        </p>
+        <ul>
+          <li><strong>Output high:</strong> top transistor ON, bottom OFF &mdash; pin connected to V<sub>CC</sub> through a low-resistance path.</li>
+          <li><strong>Output low:</strong> bottom transistor ON, top OFF &mdash; pin connected to GND through a low-resistance path.</li>
+        </ul>
+        <p>
+          Because the pin is always actively connected to one rail or the other, push-pull outputs have fast, symmetric rise and fall times and a well-defined output impedance &mdash; no external pull resistor is needed for the logic levels themselves.
+        </p>
+      </section>
+
+      <section>
+        <h2>Output Impedance and Drive Strength</h2>
+        <p>
+          A push-pull output isn't a perfect voltage source &mdash; each transistor has an on-resistance (R<sub>DS(on)</sub> for MOSFETs), which determines how much the output voltage sags under load.
+        </p>
+        <div class="formula-block">
+          <p>V<sub>OUT</sub> = V<sub>CC</sub> &minus; I<sub>load</sub> &times; R<sub>DS(on)</sub> &nbsp;(driving high)</p>
+          <p class="formula-note">A microcontroller pin with R<sub>DS(on)</sub> = 30 Ω driving 8 mA will sag by 240 mV from the rail &mdash; check this against your receiver's V<sub>IH</sub> minimum.</p>
+        </div>
+        <p>
+          Datasheets specify maximum source/sink current per pin (commonly a few mA to tens of mA for MCU GPIO) and total current limits per package &mdash; exceeding either can cause excessive voltage sag, overheating, or permanent damage.
+        </p>
+      </section>
+
+      <section>
+        <h2>The "Drive Fight" Problem</h2>
+        <p>
+          Because both transistors actively drive the line, two push-pull outputs must <strong>never</strong> be connected directly together unless both are guaranteed to always agree on the output state. If one drives high while the other drives low, a low-impedance path forms directly from V<sub>CC</sub> to GND through both output stages &mdash; a near short circuit.
+        </p>
+        <ul>
+          <li>This is why shared buses (I&sup2;C, shared resets, shared interrupt lines) use open-drain outputs instead.</li>
+          <li>It's also why UART TX lines, SPI MOSI/MISO, and other point-to-point signals are safe as push-pull &mdash; each line has exactly one driver.</li>
+          <li>Tri-state (three-state) buffers solve this for buses that genuinely need multiple push-pull-capable drivers (e.g. parallel memory buses): each driver can electrically disconnect itself (high-Z) when not addressed.</li>
+        </ul>
+        <div class="practical-tip">
+          <span class="tip-label">Practical tip</span>
+          During bring-up, if you reconfigure a pin's direction in firmware (e.g. switching a pin between input and output, or between two peripherals), make sure both ends of a connection are never simultaneously configured as push-pull outputs with different intended states &mdash; even momentarily during a GPIO reconfiguration sequence. Brief drive fights during mode transitions are a common source of mysterious glitches and, over time, damaged pins.
+        </div>
+      </section>
+
+      <section>
+        <h2>Push-Pull vs Open-Drain &mdash; When to Use Which</h2>
+        <table class="ref-table">
+          <thead>
+            <tr><th>Situation</th><th>Recommended Output Type</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Single driver, single receiver (UART, SPI, point-to-point GPIO)</td><td>Push-pull</td></tr>
+            <tr><td>Shared bus with multiple potential drivers (I&sup2;C, shared IRQ/reset)</td><td>Open-drain</td></tr>
+            <tr><td>Driving an LED or low-current load directly</td><td>Push-pull</td></tr>
+            <tr><td>Interfacing between different voltage domains on a shared line</td><td>Open-drain</td></tr>
+            <tr><td>Status/fault flag that multiple ICs may assert</td><td>Open-drain</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Driving Larger Loads</h2>
+        <p>
+          A push-pull GPIO can directly drive small loads (a few mA &mdash; an LED with a series resistor, a logic-level input on another chip). For anything larger &mdash; relays, motors, high-current LEDs, solenoids &mdash; the GPIO drives an external switch (a MOSFET or driver IC) that itself forms a push-pull or open-drain stage at a higher power level. The GPIO's job becomes <em>controlling</em> the switch, not <em>being</em> the switch.
+        </p>
+      </section>
+
+    </article>
+
+    <nav class="chapter-nav">
+      <div class="chapter-nav-prev">
+        <a href="open-drain.html">&lsaquo; Open-Drain &amp; Open-Collector</a>
+      </div>
+      <a href="../../index.html" class="chapter-nav-home">&#8962; All Chapters</a>
+      <div class="chapter-nav-next">
+        <a href="floating-inputs.html">Next: Floating Inputs &rsaquo;</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Hardware Handbook &mdash; A practical reference for hardware engineers.</p>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
