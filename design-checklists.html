@@ -1,27 +1,339 @@
-<h1>Hardware Design Checklists</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Checklists — Hardware Handbook</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dark-theme.css">
+</head>
+<body>
 
-<h2>Schematic Checklist</h2>
-<ul>
-  <li>All ICs have decoupling capacitors</li>
-  <li>Unused MCU pins handled correctly</li>
-  <li>Pull-ups and pull-downs added where required</li>
-  <li>Protection circuitry reviewed</li>
-  <li>Power rails verified</li>
-</ul>
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">H</div>
+    Hardware Handbook
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="learning-path.html">Learning Path</a></li>
+    <li><a href="design-checklists.html" class="active">Checklists</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+    <li><a href="interview-questions.html">Interview Q&amp;A</a></li>
+    <li><a href="references.html">References</a></li>
+  </ul>
+  <div class="nav-spacer"></div>
+  <button class="nav-search-trigger" onclick="document.querySelector('.search-overlay').classList.add('open');setTimeout(()=>document.querySelector('.search-input').focus(),50)">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Search topics…<kbd>⌘K</kbd>
+  </button>
+  <button class="nav-theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon-dark">☽</span><span class="theme-icon-light">☀</span>
+  </button>
+  <button class="nav-menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+</nav>
 
-<h2>PCB Checklist</h2>
-<ul>
-  <li>Ground plane present</li>
-  <li>Return current paths verified</li>
-  <li>Trace widths checked</li>
-  <li>Via sizes verified</li>
-  <li>DRC passes without errors</li>
-</ul>
+<div class="search-overlay" role="dialog" aria-modal="true">
+  <div class="search-modal">
+    <div class="search-input-row">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" type="text" placeholder="Search topics…" autocomplete="off">
+    </div>
+    <div class="search-results"><div style="padding:24px;text-align:center;color:var(--text-3);font-size:0.875rem;">Start typing to search…</div></div>
+    <div class="search-footer"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> open</span><span><kbd>Esc</kbd> close</span></div>
+  </div>
+</div>
 
-<h2>Manufacturing Checklist</h2>
-<ul>
-  <li>Silkscreen reviewed</li>
-  <li>Assembly clearances checked</li>
-  <li>Test points added</li>
-  <li>Gerbers generated and verified</li>
-</ul>
+<div class="page-wrapper">
+<div class="container" style="padding-top: var(--sp-12); padding-bottom: var(--sp-20); max-width: 860px">
+
+  <div style="margin-bottom: var(--sp-10)">
+    <span class="badge badge-teal" style="margin-bottom:var(--sp-3);display:inline-block">Design Checklists</span>
+    <h1 style="font-family:var(--font-serif);font-size:clamp(2rem,5vw,var(--text-3xl));font-weight:600;color:var(--text);letter-spacing:-0.02em;margin-bottom:var(--sp-4)">
+      Pre-flight checks for<br>every stage of design
+    </h1>
+    <p style="font-size:var(--text-lg);color:var(--text-2);line-height:1.65;max-width:580px">
+      Tick these off before sending to fab or heading into assembly. Checkboxes save to your browser.
+    </p>
+  </div>
+
+  <!-- ── Schematic Review ── -->
+  <div class="checklist-section" id="schematic">
+    <div class="checklist-header">
+      <div class="checklist-header-icon">📐</div>
+      <h2 class="checklist-title">Schematic Review</h2>
+    </div>
+    <ul class="checklist" id="cl-schematic">
+      <li>
+        <input type="checkbox" id="sch-1">
+        <label for="sch-1" class="checklist-item-text">Every net has a proper name — no unnamed wires left as Wire1, Wire2 etc.
+          <div class="checklist-item-note">Unnamed nets are a major source of hidden short-circuit errors.</div>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-2">
+        <label for="sch-2" class="checklist-item-text">All power pins (VCC, GND, etc.) are connected. Run ERC and resolve all errors.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-3">
+        <label for="sch-3" class="checklist-item-text">Bypass capacitors placed for every IC — 100 nF ceramic near each VCC pin, plus bulk cap per power domain.
+          <div class="checklist-item-note">Typical: 100 nF X7R per pin, 10–47 µF bulk per regulator output.</div>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-4">
+        <label for="sch-4" class="checklist-item-text">Pull-up or pull-down resistors on all GPIO inputs that could float — reset pins, enable pins, BOOT pins.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-5">
+        <label for="sch-5" class="checklist-item-text">I2C SDA/SCL have pull-up resistors. Value chosen for bus capacitance: typically 4.7 kΩ for short PCB traces.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-6">
+        <label for="sch-6" class="checklist-item-text">CAN bus has 120 Ω termination at both physical ends of the bus. Not in the middle, not missing.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-7">
+        <label for="sch-7" class="checklist-item-text">All MOSFET gates have pull-down resistors (10–100 kΩ) to prevent floating gate during power-up/down.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-8">
+        <label for="sch-8" class="checklist-item-text">Inductive loads (motors, solenoids, relays) have flyback protection — TVS, Schottky, or integrated clamp.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-9">
+        <label for="sch-9" class="checklist-item-text">Fuses or PTC resettable fuses on power inputs. Rating ≥ max expected current, ≤ component ratings.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-10">
+        <label for="sch-10" class="checklist-item-text">Voltage regulator input and output caps match datasheet recommendations. ESR in range for stability.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-11">
+        <label for="sch-11" class="checklist-item-text">Programming and debug headers included (SWD / JTAG / UART). At minimum, UART TX/RX on test pads.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-12">
+        <label for="sch-12" class="checklist-item-text">Crystal load capacitors calculated and specified, not left at a generic value.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-13">
+        <label for="sch-13" class="checklist-item-text">All connectors have mating connector part numbers in the BOM. Verify footprint matches exact series.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-14">
+        <label for="sch-14" class="checklist-item-text">Component reference designators are unique and sequential. No two parts share the same designator.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="sch-15">
+        <label for="sch-15" class="checklist-item-text">Schematic reviewed by at least one other person, or reviewed by yourself after 24-hour break.</label>
+      </li>
+    </ul>
+    <div class="checklist-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <span class="progress-text">0/15</span>
+    </div>
+  </div>
+
+  <!-- ── PCB Layout ── -->
+  <div class="checklist-section" id="pcb-layout">
+    <div class="checklist-header">
+      <div class="checklist-header-icon">🟢</div>
+      <h2 class="checklist-title">PCB Layout</h2>
+    </div>
+    <ul class="checklist" id="cl-pcb">
+      <li>
+        <input type="checkbox" id="pcb-1">
+        <label for="pcb-1" class="checklist-item-text">Decoupling capacitors placed within 1 mm of each IC VCC pin, on the same layer, nearest possible via to GND.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-2">
+        <label for="pcb-2" class="checklist-item-text">High-current traces verified: use IPC-2221 or similar. 1 A on a 1 oz copper 2-layer needs ≥ 0.4 mm trace for &lt; 10°C rise.
+          <div class="checklist-item-note">Rule of thumb: 0.5 mm/A for external traces, 0.3 mm/A internal (with derating).</div>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-3">
+        <label for="pcb-3" class="checklist-item-text">Ground pours / planes are solid and uninterrupted under high-speed signals. No ground slots created by accidental routing.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-4">
+        <label for="pcb-4" class="checklist-item-text">Switching regulator layout follows datasheet guidelines: tight loop from input cap → switch → inductor → output cap.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-5">
+        <label for="pcb-5" class="checklist-item-text">Crystal routed short and direct. Guard ring or keep-out zone around it. No routing under crystal body.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-6">
+        <label for="pcb-6" class="checklist-item-text">CAN / RS-485 / differential pairs are length-matched and routed as differential pairs with consistent spacing.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-7">
+        <label for="pcb-7" class="checklist-item-text">Power and GND pads on thermally sensitive ICs (regulators, MOSFETs) have adequate copper or thermal vias to dissipate heat.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-8">
+        <label for="pcb-8" class="checklist-item-text">Via stitching applied around the board perimeter and between layer transitions to reduce loop area.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-9">
+        <label for="pcb-9" class="checklist-item-text">Test points on all key nets: power rails, communication buses, control signals, and any hard-to-probe nodes.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-10">
+        <label for="pcb-10" class="checklist-item-text">Silkscreen: ref designators readable, polarity markers on caps and diodes, connector pin-1 marked, board name and version visible.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-11">
+        <label for="pcb-11" class="checklist-item-text">DRC run with manufacturer's design rules loaded. Zero errors and zero critical warnings.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-12">
+        <label for="pcb-12" class="checklist-item-text">3D model reviewed — no component collisions, mounting holes clear, connector clearances from enclosure accounted for.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-13">
+        <label for="pcb-13" class="checklist-item-text">Fiducials present (minimum 3) if board will be assembled by pick-and-place machine.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pcb-14">
+        <label for="pcb-14" class="checklist-item-text">All SMD components have courtyard clearance from each other. No overlapping courtyards except intentional keep-outs.</label>
+      </li>
+    </ul>
+    <div class="checklist-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <span class="progress-text">0/14</span>
+    </div>
+  </div>
+
+  <!-- ── Pre-Assembly Inspection ── -->
+  <div class="checklist-section" id="pre-assembly">
+    <div class="checklist-header">
+      <div class="checklist-header-icon">🔍</div>
+      <h2 class="checklist-title">Pre-Assembly Bare Board Inspection</h2>
+    </div>
+    <ul class="checklist" id="cl-preassembly">
+      <li>
+        <input type="checkbox" id="pa-1">
+        <label for="pa-1" class="checklist-item-text">Visual inspection under bright light — no scratches through copper, no delamination, solder mask intact.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pa-2">
+        <label for="pa-2" class="checklist-item-text">Continuity check: all power rails connected end-to-end. Verify VCC from connector to all VCC pads.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pa-3">
+        <label for="pa-3" class="checklist-item-text">Short circuit check: GND to VCC reads open (or >> 1 kΩ) on bare board before any components.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pa-4">
+        <label for="pa-4" class="checklist-item-text">All vias have complete plating — no open vias on continuity check between layers.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pa-5">
+        <label for="pa-5" class="checklist-item-text">Board dimensions verified against design. Mounting holes at correct positions and correct diameter.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="pa-6">
+        <label for="pa-6" class="checklist-item-text">Connector footprints match physical connectors ordered — verify pin 1 orientation before assembly.</label>
+      </li>
+    </ul>
+    <div class="checklist-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <span class="progress-text">0/6</span>
+    </div>
+  </div>
+
+  <!-- ── Bring-Up ── -->
+  <div class="checklist-section" id="bring-up">
+    <div class="checklist-header">
+      <div class="checklist-header-icon">🔋</div>
+      <h2 class="checklist-title">First Power-Up (Bring-Up)</h2>
+    </div>
+    <ul class="checklist" id="cl-bringup">
+      <li>
+        <input type="checkbox" id="bu-1">
+        <label for="bu-1" class="checklist-item-text">Bench supply set to correct voltage. Current limit set LOW (50–100 mA) for first power-up.
+          <div class="checklist-item-note">If current immediately hits limit without rising slowly, there's a short. Investigate before increasing.</div>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-2">
+        <label for="bu-2" class="checklist-item-text">Measure all power rails with multimeter before touching any IC. Verify voltage, polarity.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-3">
+        <label for="bu-3" class="checklist-item-text">Feel all ICs and regulators for excessive heat within 30 seconds. A component that gets hot to touch instantly has a problem.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-4">
+        <label for="bu-4" class="checklist-item-text">Increase current limit gradually. Monitor total current draw and compare to expected (sum of all IC quiescent currents).</label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-5">
+        <label for="bu-5" class="checklist-item-text">Connect programmer/debugger. Verify MCU is detected and responds. Flash test firmware.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-6">
+        <label for="bu-6" class="checklist-item-text">Test each communication bus: toggle GPIO, verify on oscilloscope. Test I2C scan, SPI loopback, UART echo.</label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-7">
+        <label for="bu-7" class="checklist-item-text">Check power rail ripple on oscilloscope under load. Should be within spec (typically &lt; 50 mV for sensitive analog circuits).</label>
+      </li>
+      <li>
+        <input type="checkbox" id="bu-8">
+        <label for="bu-8" class="checklist-item-text">Document all findings, current draw figures, and any anomalies found during bring-up. Update schematic/layout if issues found.</label>
+      </li>
+    </ul>
+    <div class="checklist-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <span class="progress-text">0/8</span>
+    </div>
+  </div>
+
+  <!-- Reset all button -->
+  <div style="text-align:center;margin-top:var(--sp-8)">
+    <button class="btn btn-secondary" onclick="resetAllChecklists()" style="font-size:var(--text-sm)">
+      ↺ Reset All Checklists
+    </button>
+  </div>
+
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><strong>Hardware Handbook</strong> — Electronics Design Reference</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="references.html">References</a></li>
+      <li><a href="glossary.html">Glossary</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/search.js"></script>
+<script>
+function resetAllChecklists() {
+  if (!confirm('Reset all checklists? This clears saved progress.')) return;
+  document.querySelectorAll('.checklist input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('li').classList.remove('checked');
+  });
+  document.querySelectorAll('.progress-fill').forEach(f => f.style.width = '0%');
+  document.querySelectorAll('.progress-text').forEach(t => {
+    const list = t.closest('.checklist-section').querySelector('.checklist');
+    const total = list.querySelectorAll('li').length;
+    t.textContent = '0/' + total;
+  });
+  // Clear localStorage keys for this page
+  Object.keys(localStorage).forEach(k => {
+    if (k.startsWith('hh-checklist-')) localStorage.removeItem(k);
+  });
+}
+</script>
+</body>
+</html>
