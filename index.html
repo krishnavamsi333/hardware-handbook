@@ -1,27 +1,289 @@
-<h1>Hardware Handbook</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hardware Handbook — a complete reference for electronics hardware design, PCB layout, embedded systems, and robotics.">
+  <title>Hardware Handbook</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dark-theme.css">
+</head>
+<body>
 
-<p>
-A practical reference for hardware engineers, embedded developers,
-robotics engineers, and students.
-</p>
+<!-- ── Top Navigation ── -->
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">H</div>
+    Hardware Handbook
+  </a>
 
-<h2>Start Learning</h2>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="learning-path.html">Learning Path</a></li>
+    <li><a href="design-checklists.html">Checklists</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+    <li><a href="interview-questions.html">Interview Q&amp;A</a></li>
+    <li><a href="references.html">References</a></li>
+  </ul>
 
-<ul>
-  <li><a href="chapters/fundamentals/voltage-current-power.html">Voltage, Current & Power</a></li>
-  <li><a href="chapters/fundamentals/conventional-current.html">Conventional Current</a></li>
-  <li><a href="chapters/fundamentals/ohms-law.html">Ohm's Law</a></li>
-  <li><a href="chapters/fundamentals/grounding.html">Grounding</a></li>
-  <li><a href="chapters/fundamentals/return-current-paths.html">Return Current Paths</a></li>
-</ul>
+  <div class="nav-spacer"></div>
 
-<h2>Resources</h2>
+  <button class="nav-search-trigger" onclick="document.querySelector('.search-overlay').classList.add('open'); setTimeout(()=>document.querySelector('.search-input').focus(),50)">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Search topics…
+    <kbd>⌘K</kbd>
+  </button>
 
-<ul>
-  <li><a href="learning-path.html">Learning Path</a></li>
-  <li><a href="design-checklists.html">Design Checklists</a></li>
-  <li><a href="interview-questions.html">Interview Questions</a></li>
-  <li><a href="glossary.html">Glossary</a></li>
-  <li><a href="references.html">References</a></li>
-  <li><a href="about.html">About</a></li>
-</ul>
+  <button class="nav-theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+    <span class="theme-icon-dark">☽</span>
+    <span class="theme-icon-light">☀</span>
+  </button>
+
+  <button class="nav-menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+</nav>
+
+<!-- ── Search Overlay ── -->
+<div class="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-modal">
+    <div class="search-input-row">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" type="text" placeholder="Search topics, components, concepts…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="search-results">
+      <div style="padding:24px;text-align:center;color:var(--text-3);font-size:0.875rem;">Start typing to search…</div>
+    </div>
+    <div class="search-footer">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span>⚡</span> Electronics Design Reference
+    </div>
+    <h1 class="hero-title">
+      Build hardware with<br><em>confidence & clarity</em>
+    </h1>
+    <p class="hero-subtitle">
+      A practical field guide for electronics engineers — from first principles to production-ready PCB design, power systems, and embedded robotics.
+    </p>
+    <div class="hero-actions">
+      <a href="learning-path.html" class="btn btn-primary btn-lg">Start Learning Path →</a>
+      <a href="chapters/index.html" class="btn btn-secondary btn-lg">Browse All Chapters</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="hero-stat-num">200+</span>
+        <span class="hero-stat-label">Topics covered</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">18</span>
+        <span class="hero-stat-label">Chapter categories</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">7</span>
+        <span class="hero-stat-label">Project walkthroughs</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Chapter Grid ── -->
+  <div class="container" style="padding-bottom: var(--sp-20)">
+
+    <div class="section-header">
+      <h2 class="section-title">Core Chapters</h2>
+      <span class="section-meta">// start anywhere</span>
+    </div>
+
+    <div class="chapters-grid">
+
+      <a href="chapters/fundamentals/index.html" class="chapter-card" style="--card-accent: var(--amber)">
+        <span class="chapter-card-icon">⚡</span>
+        <div class="chapter-card-title">Fundamentals</div>
+        <p class="chapter-card-desc">Voltage, current, Ohm's law, grounding, pull-ups, open-drain, and the building blocks every hardware engineer must know.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">10 topics</span>
+          <span>Beginner</span>
+        </div>
+      </a>
+
+      <a href="chapters/circuit-analysis/index.html" class="chapter-card" style="--card-accent: var(--blue)">
+        <span class="chapter-card-icon">🔁</span>
+        <div class="chapter-card-title">Circuit Analysis</div>
+        <p class="chapter-card-desc">Kirchhoff's laws, voltage & current dividers, RC/RL/LC circuits, resonance, and filter fundamentals.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">8 topics</span>
+          <span>Beginner</span>
+        </div>
+      </a>
+
+      <a href="chapters/capacitors/index.html" class="chapter-card" style="--card-accent: var(--teal)">
+        <span class="chapter-card-icon">🔋</span>
+        <div class="chapter-card-title">Capacitors</div>
+        <p class="chapter-card-desc">Bypass, decoupling, bulk, filter, snubber, and timing capacitors — types, selection, and placement strategy.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">12 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/power/index.html" class="chapter-card" style="--card-accent: #f87171">
+        <span class="chapter-card-icon">🔌</span>
+        <div class="chapter-card-title">Power Systems</div>
+        <p class="chapter-card-desc">LDOs, buck/boost converters, power sequencing, fuse selection, TVS diodes, and overcurrent protection.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">14 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/mosfets/index.html" class="chapter-card" style="--card-accent: #a78bfa">
+        <span class="chapter-card-icon">🔷</span>
+        <div class="chapter-card-title">MOSFETs</div>
+        <p class="chapter-card-desc">N- and P-channel operation, gate charge, gate resistors, body diode, flyback diodes, and safe operating area.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">11 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/communication/index.html" class="chapter-card" style="--card-accent: var(--teal)">
+        <span class="chapter-card-icon">📡</span>
+        <div class="chapter-card-title">Communication Protocols</div>
+        <p class="chapter-card-desc">UART, I2C, SPI, CAN bus, RS-485 — hardware design, termination, pull-ups, ESD protection, and layout rules.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">16 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/pcb/index.html" class="chapter-card" style="--card-accent: var(--green)">
+        <span class="chapter-card-icon">🟢</span>
+        <div class="chapter-card-title">PCB Design</div>
+        <p class="chapter-card-desc">Trace width, via sizing, copper pours, ground planes, thermal relief, power routing, and stackup selection.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">12 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/signal-integrity/index.html" class="chapter-card" style="--card-accent: var(--amber)">
+        <span class="chapter-card-icon">〰️</span>
+        <div class="chapter-card-title">Signal Integrity</div>
+        <p class="chapter-card-desc">Ringing, overshoot, reflections, controlled impedance, series termination, and differential pair routing.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">12 topics</span>
+          <span>Advanced</span>
+        </div>
+      </a>
+
+      <a href="chapters/emi-emc/index.html" class="chapter-card" style="--card-accent: #f87171">
+        <span class="chapter-card-icon">📻</span>
+        <div class="chapter-card-title">EMI / EMC</div>
+        <p class="chapter-card-desc">Radiated & conducted EMI, return paths, loop area reduction, ferrite beads, and common-mode chokes.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">9 topics</span>
+          <span>Advanced</span>
+        </div>
+      </a>
+
+      <a href="chapters/sensors/index.html" class="chapter-card" style="--card-accent: var(--blue)">
+        <span class="chapter-card-icon">📊</span>
+        <div class="chapter-card-title">Sensors & Analog</div>
+        <p class="chapter-card-desc">ADC/DAC basics, op-amps, sensor conditioning, current sensing, shunt resistors, thermistors, encoders.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">10 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/mcu-design/index.html" class="chapter-card" style="--card-accent: #a78bfa">
+        <span class="chapter-card-icon">🔲</span>
+        <div class="chapter-card-title">MCU Design</div>
+        <p class="chapter-card-desc">Reset circuits, boot strapping, crystal oscillators, programming & debug headers, watchdog, level shifters.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">7 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/robotics/index.html" class="chapter-card" style="--card-accent: var(--teal)">
+        <span class="chapter-card-icon">🤖</span>
+        <div class="chapter-card-title">Robotics Hardware</div>
+        <p class="chapter-card-desc">Power architecture, CAN bus design, motor & solenoid driver protection, encoder interfaces, and e-stop circuits.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">9 topics</span>
+          <span>Advanced</span>
+        </div>
+      </a>
+
+      <a href="chapters/manufacturing/index.html" class="chapter-card" style="--card-accent: var(--amber)">
+        <span class="chapter-card-icon">🏭</span>
+        <div class="chapter-card-title">Manufacturing</div>
+        <p class="chapter-card-desc">DRC rules, trace clearance, annular rings, solder mask, silkscreen, via sizes, and panelization for fabrication.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">7 topics</span>
+          <span>Intermediate</span>
+        </div>
+      </a>
+
+      <a href="chapters/debugging/index.html" class="chapter-card" style="--card-accent: var(--green)">
+        <span class="chapter-card-icon">🔬</span>
+        <div class="chapter-card-title">Debugging</div>
+        <p class="chapter-card-desc">Multimeter, oscilloscope, logic analyzer, CAN analyzer usage. Troubleshooting methodology and common failures.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">6 topics</span>
+          <span>All levels</span>
+        </div>
+      </a>
+
+      <a href="chapters/safety/index.html" class="chapter-card" style="--card-accent: #f87171">
+        <span class="chapter-card-icon">🛡️</span>
+        <div class="chapter-card-title">Safety</div>
+        <p class="chapter-card-desc">Fuse coordination, electrical isolation, creepage & clearance, emergency stop principles, and functional safety basics.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">5 topics</span>
+          <span>Advanced</span>
+        </div>
+      </a>
+
+      <a href="chapters/projects/index.html" class="chapter-card" style="--card-accent: var(--amber)">
+        <span class="chapter-card-icon">🛠️</span>
+        <div class="chapter-card-title">Projects</div>
+        <p class="chapter-card-desc">Full board walkthroughs: solenoid controller, ESP32 minimum design, CAN node, motor driver, and robot control board.</p>
+        <div class="chapter-card-meta">
+          <span class="chapter-card-tag">7 projects</span>
+          <span>All levels</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</div><!-- .page-wrapper -->
+
+<!-- ── Footer ── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>Hardware Handbook</strong> — Electronics Design Reference
+    </div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="references.html">References</a></li>
+      <li><a href="glossary.html">Glossary</a></li>
+      <li><a href="learning-path.html">Learning Path</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/search.js"></script>
+</body>
+</html>
