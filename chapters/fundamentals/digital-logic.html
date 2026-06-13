@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Logic Levels | Hardware Handbook</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="../../index.html" class="site-logo">Hardware Handbook</a>
+    <nav class="breadcrumb">
+      <a href="../../index.html">Home</a> &rsaquo;
+      <a href="../../index.html#fundamentals">Fundamentals</a> &rsaquo;
+      <span>Digital Logic Levels</span>
+    </nav>
+  </header>
+
+  <main class="chapter-main">
+
+    <article class="chapter-content">
+
+      <div class="chapter-meta">
+        <span class="chapter-tag">Fundamentals</span>
+      </div>
+      <h1>Digital Logic Levels</h1>
+      <p class="chapter-intro">
+        "0" and "1" are abstractions. In real hardware, a logic level is a voltage range, and two chips only communicate reliably if their voltage ranges agree &mdash; or are deliberately translated.
+      </p>
+
+      <section>
+        <h2>The Four Key Thresholds</h2>
+        <p>Every digital input and output is specified with four voltage thresholds:</p>
+        <table class="ref-table">
+          <thead>
+            <tr><th>Symbol</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V<sub>OH</sub></td><td>Minimum voltage guaranteed when an output drives "high"</td></tr>
+            <tr><td>V<sub>OL</sub></td><td>Maximum voltage guaranteed when an output drives "low"</td></tr>
+            <tr><td>V<sub>IH</sub></td><td>Minimum voltage an input is guaranteed to recognize as "high"</td></tr>
+            <tr><td>V<sub>IL</sub></td><td>Maximum voltage an input is guaranteed to recognize as "low"</td></tr>
+          </tbody>
+        </table>
+        <p>
+          For correct communication, an output's guaranteed levels must fall safely inside the receiving input's recognized ranges: V<sub>OH</sub> &ge; V<sub>IH</sub> and V<sub>OL</sub> &le; V<sub>IL</sub>. The gap between V<sub>IL</sub> and V<sub>IH</sub> is the "forbidden zone" &mdash; a voltage in that range is not guaranteed to be read as either 0 or 1.
+        </p>
+      </section>
+
+      <section>
+        <h2>Noise Margin</h2>
+        <p>
+          Noise margin is the headroom between what an output guarantees and what an input requires &mdash; it's the amount of noise a signal can tolerate before it risks being misread.
+        </p>
+        <div class="formula-block">
+          <p>NM<sub>H</sub> = V<sub>OH</sub> &minus; V<sub>IH</sub> &nbsp;(high-level noise margin)</p>
+          <p>NM<sub>L</sub> = V<sub>IL</sub> &minus; V<sub>OL</sub> &nbsp;(low-level noise margin)</p>
+          <p class="formula-note">Larger noise margins mean a more robust system &mdash; important for long cables, noisy environments (near motors, switching supplies), or signals that pass through connectors.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Common Logic Families and Their Levels</h2>
+        <table class="ref-table">
+          <thead>
+            <tr><th>Family / Voltage</th><th>V<sub>IL(max)</sub></th><th>V<sub>IH(min)</sub></th><th>Typical Use</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>5 V TTL / TTL-compatible</td><td>0.8 V</td><td>2.0 V</td><td>Legacy logic, some industrial I/O</td></tr>
+            <tr><td>5 V CMOS</td><td>1.5 V</td><td>3.5 V</td><td>Older microcontrollers, 5 V logic ICs</td></tr>
+            <tr><td>3.3 V CMOS</td><td>0.8 V</td><td>2.0 V</td><td>Most modern microcontrollers and sensors</td></tr>
+            <tr><td>1.8 V CMOS</td><td>0.45 V</td><td>1.17 V</td><td>Low-power MCUs, mobile/embedded SoCs</td></tr>
+          </tbody>
+        </table>
+        <p class="formula-note">Exact thresholds vary by part and supply voltage &mdash; always check the specific datasheet, especially V<sub>IH(min)</sub> as a fraction of V<sub>CC</sub> (commonly 0.7 &times; V<sub>CC</sub> for CMOS).</p>
+      </section>
+
+      <section>
+        <h2>Mixed-Voltage Interfacing</h2>
+        <p>
+          A very common real-world scenario: a 3.3 V microcontroller needs to talk to a 5 V peripheral, or vice versa. Whether a level shifter is required depends on direction and tolerance:
+        </p>
+        <ul>
+          <li><strong>3.3 V output &rarr; 5 V input:</strong> A 3.3 V V<sub>OH</sub> (~3.0 V minimum) is often, but not always, above the 5 V part's V<sub>IH(min)</sub> (often 2.0 V for TTL-level inputs, but can be higher for CMOS-level 5 V inputs ~3.5 V). Check the specific V<sub>IH</sub> &mdash; this direction sometimes works without translation, sometimes doesn't.</li>
+          <li><strong>5 V output &rarr; 3.3 V input:</strong> A 5 V V<sub>OH</sub> (~4.0&ndash;5 V) will exceed the absolute maximum voltage rating of most 3.3 V inputs (often V<sub>CC</sub> + 0.3 V = 3.6 V). This direction almost always requires a level shifter or resistor divider &mdash; driving a 3.3 V input pin with 5 V can permanently damage it.</li>
+          <li><strong>Open-drain signals (I&sup2;C):</strong> can often cross voltage domains simply by choosing which rail the pull-up resistor connects to &mdash; see the <a href="open-drain.html">Open-Drain &amp; Open-Collector</a> chapter.</li>
+        </ul>
+        <div class="practical-tip">
+          <span class="tip-label">Practical tip</span>
+          "5 V tolerant" inputs exist on many 3.3 V parts &mdash; check the datasheet's absolute maximum ratings table, not just the recommended operating conditions. A pin can be specified to operate at 3.3 V logic levels while still surviving (but not necessarily correctly interpreting) a 5 V input, which is a different and more limited guarantee than true 5 V-tolerant logic.
+        </div>
+      </section>
+
+      <section>
+        <h2>Why This Matters for Debugging</h2>
+        <p>
+          A huge fraction of "intermittent" digital communication problems trace back to logic levels: a signal that sits right at the edge of V<sub>IH</sub> will be read correctly most of the time but flip occasionally when temperature, supply voltage, or loading shifts the threshold slightly. When a digital signal misbehaves, measuring its actual high and low voltages with a scope or meter &mdash; and comparing them against the receiving device's datasheet thresholds &mdash; is one of the highest-value first steps.
+        </p>
+      </section>
+
+    </article>
+
+    <nav class="chapter-nav">
+      <div class="chapter-nav-prev">
+        <a href="floating-inputs.html">&lsaquo; Floating Inputs</a>
+      </div>
+      <a href="../../index.html" class="chapter-nav-home">&#8962; All Chapters</a>
+      <div class="chapter-nav-next">
+        <!-- Last page in fundamentals; continue to Circuit Analysis from the home page -->
+      </div>
+    </nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Hardware Handbook &mdash; A practical reference for hardware engineers.</p>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
