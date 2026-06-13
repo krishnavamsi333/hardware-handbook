@@ -1,34 +1,235 @@
-<h1>Hardware Learning Path</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Path — Hardware Handbook</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dark-theme.css">
+</head>
+<body>
 
-<h2>Beginner</h2>
-<ol>
-  <li>Voltage, Current & Power</li>
-  <li>Conventional Current</li>
-  <li>Ohm's Law</li>
-  <li>Grounding</li>
-  <li>Return Current Paths</li>
-  <li>Pull-ups & Pull-downs</li>
-  <li>Digital Logic</li>
-</ol>
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">H</div>
+    Hardware Handbook
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="learning-path.html" class="active">Learning Path</a></li>
+    <li><a href="design-checklists.html">Checklists</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+    <li><a href="interview-questions.html">Interview Q&amp;A</a></li>
+    <li><a href="references.html">References</a></li>
+  </ul>
+  <div class="nav-spacer"></div>
+  <button class="nav-search-trigger" onclick="document.querySelector('.search-overlay').classList.add('open');setTimeout(()=>document.querySelector('.search-input').focus(),50)">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Search topics…<kbd>⌘K</kbd>
+  </button>
+  <button class="nav-theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon-dark">☽</span><span class="theme-icon-light">☀</span>
+  </button>
+  <button class="nav-menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+</nav>
 
-<h2>Intermediate</h2>
-<ol>
-  <li>Capacitors</li>
-  <li>Inductors</li>
-  <li>MOSFETs</li>
-  <li>Power Distribution</li>
-  <li>UART</li>
-  <li>I2C</li>
-  <li>SPI</li>
-  <li>CAN</li>
-</ol>
+<!-- Search Overlay -->
+<div class="search-overlay" role="dialog" aria-modal="true">
+  <div class="search-modal">
+    <div class="search-input-row">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" type="text" placeholder="Search topics…" autocomplete="off">
+    </div>
+    <div class="search-results"><div style="padding:24px;text-align:center;color:var(--text-3);font-size:0.875rem;">Start typing to search…</div></div>
+    <div class="search-footer"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> open</span><span><kbd>Esc</kbd> close</span></div>
+  </div>
+</div>
 
-<h2>Advanced</h2>
-<ol>
-  <li>Signal Integrity</li>
-  <li>Differential Signals</li>
-  <li>EMI/EMC</li>
-  <li>Controlled Impedance</li>
-  <li>High-Speed PCB Design</li>
-  <li>Reliability Engineering</li>
-</ol>
+<div class="page-wrapper">
+  <div class="container" style="padding-top: var(--sp-12); padding-bottom: var(--sp-20); max-width: 820px;">
+
+    <div style="margin-bottom: var(--sp-10)">
+      <span class="badge badge-amber" style="margin-bottom: var(--sp-3); display:inline-block">Learning Path</span>
+      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem,5vw,var(--text-3xl)); font-weight:600; color:var(--text); letter-spacing:-0.02em; margin-bottom:var(--sp-4)">
+        From first principles<br>to production hardware
+      </h1>
+      <p style="font-size: var(--text-lg); color: var(--text-2); line-height:1.65; max-width:580px">
+        Follow this structured path whether you're just starting out or filling in specific gaps. Each stage builds on the last.
+      </p>
+    </div>
+
+    <!-- Stage 1 -->
+    <div class="path-track">
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 1 — Foundation</div>
+          <div class="path-card-title">Electrical Fundamentals</div>
+          <p class="path-card-desc">Before touching a PCB tool, build mental models for how electricity behaves. These concepts appear in every other topic.</p>
+          <div class="path-topics">
+            <a href="chapters/fundamentals/voltage-current-power.html" class="path-topic-chip">Voltage, Current & Power</a>
+            <a href="chapters/fundamentals/ohms-law.html" class="path-topic-chip">Ohm's Law</a>
+            <a href="chapters/fundamentals/grounding.html" class="path-topic-chip">Grounding</a>
+            <a href="chapters/fundamentals/return-current-paths.html" class="path-topic-chip">Return Current Paths</a>
+            <a href="chapters/fundamentals/pullups-pulldowns.html" class="path-topic-chip">Pull-up & Pull-down</a>
+            <a href="chapters/fundamentals/floating-inputs.html" class="path-topic-chip">Floating Inputs</a>
+            <a href="chapters/fundamentals/digital-logic.html" class="path-topic-chip">Digital Logic Levels</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 2 — Circuit Analysis</div>
+          <div class="path-card-title">Analyzing Circuits on Paper</div>
+          <p class="path-card-desc">Learn to calculate voltages, currents, and component values before reaching for a simulator.</p>
+          <div class="path-topics">
+            <a href="chapters/circuit-analysis/kirchhoffs-laws.html" class="path-topic-chip">Kirchhoff's Laws</a>
+            <a href="chapters/circuit-analysis/voltage-divider.html" class="path-topic-chip">Voltage Divider</a>
+            <a href="chapters/circuit-analysis/rc-circuits.html" class="path-topic-chip">RC Circuits</a>
+            <a href="chapters/circuit-analysis/filter-basics.html" class="path-topic-chip">Filter Basics</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 3 — Passive Components</div>
+          <div class="path-card-title">Capacitors, Inductors & Magnetics</div>
+          <p class="path-card-desc">Deep understanding of passives separates good designs from great ones. Know what every cap and ferrite is doing.</p>
+          <div class="path-topics">
+            <a href="chapters/capacitors/capacitor-basics.html" class="path-topic-chip">Capacitor Basics</a>
+            <a href="chapters/capacitors/capacitor-types.html" class="path-topic-chip">Capacitor Types</a>
+            <a href="chapters/capacitors/bypass-capacitors.html" class="path-topic-chip">Bypass Caps</a>
+            <a href="chapters/capacitors/decoupling-capacitors.html" class="path-topic-chip">Decoupling</a>
+            <a href="chapters/magnetics/inductor-basics.html" class="path-topic-chip">Inductor Basics</a>
+            <a href="chapters/emi-emc/ferrite-beads.html" class="path-topic-chip">Ferrite Beads</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 4 — Power Design</div>
+          <div class="path-card-title">Power Supply Design</div>
+          <p class="path-card-desc">Power is the first thing you design and the last thing you want to get wrong. Covers regulators, protection, and sequencing.</p>
+          <div class="path-topics">
+            <a href="chapters/power/ldo.html" class="path-topic-chip">LDO Regulators</a>
+            <a href="chapters/power/buck-converter.html" class="path-topic-chip">Buck Converter</a>
+            <a href="chapters/power/fuse-selection.html" class="path-topic-chip">Fuse Selection</a>
+            <a href="chapters/power/tvs-diodes.html" class="path-topic-chip">TVS Diodes</a>
+            <a href="chapters/power/reverse-polarity-protection.html" class="path-topic-chip">Reverse Polarity</a>
+            <a href="chapters/power/power-sequencing.html" class="path-topic-chip">Power Sequencing</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 5 — Switching & Drive</div>
+          <div class="path-card-title">MOSFETs & Load Switching</div>
+          <p class="path-card-desc">How to switch loads safely — from small signal GPIO to high-current motor and solenoid control.</p>
+          <div class="path-topics">
+            <a href="chapters/mosfets/mosfet-basics.html" class="path-topic-chip">MOSFET Basics</a>
+            <a href="chapters/mosfets/n-channel-mosfet.html" class="path-topic-chip">N-Channel</a>
+            <a href="chapters/mosfets/gate-resistors.html" class="path-topic-chip">Gate Resistors</a>
+            <a href="chapters/mosfets/flyback-diodes.html" class="path-topic-chip">Flyback Diodes</a>
+            <a href="chapters/mosfets/low-side-switching.html" class="path-topic-chip">Low-Side Switching</a>
+            <a href="chapters/mosfets/high-side-switching.html" class="path-topic-chip">High-Side Switching</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 6 — Communication</div>
+          <div class="path-card-title">Digital Communication Protocols</div>
+          <p class="path-card-desc">Hardware-level implementation of I2C, SPI, UART, CAN, and RS-485 — not just the protocol theory, but the actual circuit requirements.</p>
+          <div class="path-topics">
+            <a href="chapters/communication/i2c-basics.html" class="path-topic-chip">I2C</a>
+            <a href="chapters/communication/i2c-pullups.html" class="path-topic-chip">I2C Pull-ups</a>
+            <a href="chapters/communication/spi-basics.html" class="path-topic-chip">SPI</a>
+            <a href="chapters/communication/uart.html" class="path-topic-chip">UART</a>
+            <a href="chapters/communication/can-basics.html" class="path-topic-chip">CAN Bus</a>
+            <a href="chapters/communication/can-termination.html" class="path-topic-chip">CAN Termination</a>
+            <a href="chapters/communication/rs485-basics.html" class="path-topic-chip">RS-485</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 7 — PCB Layout</div>
+          <div class="path-card-title">PCB Design & Layout</div>
+          <p class="path-card-desc">Translate schematics into manufacturable boards. Trace widths, ground planes, component placement, and design for manufacture.</p>
+          <div class="path-topics">
+            <a href="chapters/pcb/pcb-overview.html" class="path-topic-chip">PCB Overview</a>
+            <a href="chapters/pcb/trace-width.html" class="path-topic-chip">Trace Width</a>
+            <a href="chapters/pcb/ground-pours.html" class="path-topic-chip">Ground Pours</a>
+            <a href="chapters/pcb/decoupling-placement.html" class="path-topic-chip">Decoupling Placement</a>
+            <a href="chapters/pcb/stackup-2layer.html" class="path-topic-chip">2-Layer Stackup</a>
+            <a href="chapters/pcb/stackup-4layer.html" class="path-topic-chip">4-Layer Stackup</a>
+            <a href="chapters/manufacturing/drc-rules.html" class="path-topic-chip">DRC Rules</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 8 — Advanced Topics</div>
+          <div class="path-card-title">Signal Integrity & EMC</div>
+          <p class="path-card-desc">For boards running at speed — or that need to pass EMC certification. Manage reflections, ringing, and radiated noise.</p>
+          <div class="path-topics">
+            <a href="chapters/signal-integrity/ringing.html" class="path-topic-chip">Ringing</a>
+            <a href="chapters/signal-integrity/controlled-impedance.html" class="path-topic-chip">Controlled Impedance</a>
+            <a href="chapters/signal-integrity/differential-pair-routing.html" class="path-topic-chip">Differential Pairs</a>
+            <a href="chapters/emi-emc/emi-basics.html" class="path-topic-chip">EMI Basics</a>
+            <a href="chapters/emi-emc/return-paths.html" class="path-topic-chip">Return Paths</a>
+            <a href="chapters/emi-emc/common-mode-chokes.html" class="path-topic-chip">Common Mode Chokes</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-node">
+        <div class="path-card">
+          <div class="path-card-label">Stage 9 — Application</div>
+          <div class="path-card-title">Build a Complete Project</div>
+          <p class="path-card-desc">Put it all together by working through a full reference design from schematic to assembled board.</p>
+          <div class="path-topics">
+            <a href="chapters/projects/solenoid-controller-board.html" class="path-topic-chip">Solenoid Controller</a>
+            <a href="chapters/projects/esp32-minimum-board.html" class="path-topic-chip">ESP32 Minimum Board</a>
+            <a href="chapters/projects/can-node.html" class="path-topic-chip">CAN Node</a>
+            <a href="chapters/projects/motor-driver-board.html" class="path-topic-chip">Motor Driver</a>
+            <a href="chapters/projects/robot-control-board.html" class="path-topic-chip">Robot Control Board</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- .path-track -->
+
+    <div style="background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--sp-6); display:flex; gap:var(--sp-4); align-items:flex-start;">
+      <div style="font-size:1.5rem; flex-shrink:0">💡</div>
+      <div>
+        <div style="font-weight:600;color:var(--text);margin-bottom:var(--sp-2)">Feeling lost? Start with Design Checklists.</div>
+        <p style="font-size:var(--text-sm);color:var(--text-2);margin:0">If you're about to design or assemble a specific board, the <a href="design-checklists.html">design checklists</a> give you an immediate, actionable framework without needing to read everything first.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><strong>Hardware Handbook</strong> — Electronics Design Reference</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="references.html">References</a></li>
+      <li><a href="glossary.html">Glossary</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/search.js"></script>
+</body>
+</html>
